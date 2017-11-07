@@ -35,7 +35,7 @@ class Post(models.Model):
     excerpt = models.CharField(max_length=200, blank=True)
     # 分类
     # 一篇文章只能有一个分类，一个分类下可以有多篇文章，所以使用 ForeignKey, 即一对多关联关系
-    category = models.ForeignKeyField(Category)
+    category = models.ForeignKey(Category)
     tags = models.ManyToManyField(Tag, blank=True)
 
     # 文章作者，这里 User 是从 django.contrib.auth.models 导入的。
