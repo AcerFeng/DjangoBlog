@@ -53,3 +53,6 @@ class Post(models.Model):
 
     # def __unicode__(self):
     #     return 
+
+    class Meta:
+        ordering = ['-created_time']
