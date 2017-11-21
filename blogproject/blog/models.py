@@ -24,7 +24,8 @@ class Tag(models.Model):
 class Post(models.Model):
     # 文章标题
     title = models.CharField(max_length=70)
-
+    # 阅读量
+    views = models.PositiveIntegerField(default=0)
     # 正文
     body = models.TextField()
 
@@ -50,6 +51,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     # def __unicode__(self):
     #     return 

@@ -19,10 +19,10 @@
                 <a href="#">{{ post.author }}</a>
             </span>
             <span class="comments-link">
-                <a href="#">4 评论</a>
+                <a href="#">{{ post.comment_set.count }} 评论</a>
             </span>
             <span class="views-count">
-                <a href="#">588 阅读</a>
+                <a href="#">{{ post.views }} 阅读</a>
             </span>
         </div>
     </header>
