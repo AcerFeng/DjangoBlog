@@ -142,11 +142,16 @@
 
                     <div class="widget widget-tag-cloud">
                         <h3 class="widget-title">标签云</h3>
+                        {%  get_tags as tag_list %}
                         <ul>
+                            {% for tag in tag_list %}
                             <li>
-                                <a href="#">Django</a>
+                                <a href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
                             </li>
-                            <li>
+                            {% empty %}
+                            暂无标签
+                            {% endfor %}
+                            <!-- <li>
                                 <a href="#">Python</a>
                             </li>
                             <li>
@@ -172,7 +177,7 @@
                             </li>
                             <li>
                                 <a href="#">jQuery</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="rss">
