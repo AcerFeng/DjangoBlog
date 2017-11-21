@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.html import strip_tags
+import markdown
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -58,6 +60,19 @@ class Post(models.Model):
 
     # def __unicode__(self):
     #     return 
+
+    def save(self, *args, **kwargs):
+        if not self.excerpt:
+            md = markdown.Markdown(extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+            ])
+            # 先将 Markdown 文本渲染成 HTML 文本
+            # strip_tags 去掉 HTML 文本的全部 HTML 标签
+            self.excerpt = strip_tags(md.convert(self.body))[:54]
+
+        # 调用父类的 save 方法
+        super(Post, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_time']
