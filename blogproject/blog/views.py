@@ -4,6 +4,8 @@ import markdown
 from comments.forms import CommentForm
 from .models import Post, Category, Tag
 from django.views.generic import ListView, DetailView
+from django.utils.text import slugify
+from markdown.extensions.toc import TocExtension
 
 class IndexView(ListView):
     """docstring for IndexView"""
@@ -182,12 +184,14 @@ class PostDetailView(DetailView):
     def get_object(self, queryset=None):
         # 覆写 get_object 方法的目的是因为需要对 post 的 body 值进行渲染
         post = super(PostDetailView, self).get_object(queryset=None)
-        post.body = markdown.markdown(post.body,
-                                  extensions=['markdown.extensions.extra',
+        md = markdown.Markdown(extensions=['markdown.extensions.extra',
                                               'markdown.extensions.codehilite',
-                                              'markdown.extensions.toc',
+                                              TocExtension(slugify=slugify),
                                               ]
                                   )
+
+        post.body = md.convert(post.body)
+        post.toc = md.toc
         return post
 
     def get_context_data(self, **kwargs):
